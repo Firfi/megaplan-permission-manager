@@ -1,0 +1,67 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>Это менеджер конфигурации прав доступа, который на шару используют несколько наших плагинов</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>
+    <webwork1 key="megapermissions-actions" name="Mega Permissions Actions">
+        <description>
+            Админский гуй для удаления и добавления прав.
+        </description>
+        <actions>
+            <action name="ru.megaplan.jira.plugins.permission.manager.action.admin.ConfigureMegaPermissionsAction" alias="MegaPermissionsConfig">
+                <view name="input">/templates/ru/megaplan/plugins/permission/manager/mega-perm-add.vm</view>
+                <view name="success">/templates/ru/megaplan/plugins/permission/manager/megaPermissionsConfig.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+    <ao key="megapermissions-ao">
+        <description>Классы для работы с БД</description>
+        <entity>ru.megaplan.jira.plugins.permission.manager.ao.bean.PermissionBean</entity>
+        <entity>ru.megaplan.jira.plugins.permission.manager.ao.bean.PermissionGroup</entity>
+    </ao>
+    <component key="megapermissions-tx-processor" name="Transactional Annotation Processor"
+               class="com.atlassian.activeobjects.external.TransactionalAnnotationProcessor">
+        <decription>Processes @Transactional annotations.</decription>
+    </component>
+    <component-import key="megapermissions-ao-import" name="Active Objects service" interface="com.atlassian.activeobjects.external.ActiveObjects">
+        <description>Component to access Active Objects functionality from the plugin</description>
+    </component-import>
+
+    <component key="megaplan-permission-group-manager"
+       name="Megaplan Permission Group Manager"
+       class="ru.megaplan.jira.plugins.permission.manager.ao.impl.MegaPermissionGroupManagerImpl" public="true">
+        <interface>ru.megaplan.jira.plugins.permission.manager.ao.MegaPermissionGroupManager</interface>
+    </component>
+
+    <component key="megaplan-permission-event"
+               name="Megaplan Permission Update Event"
+               class="ru.megaplan.jira.plugins.permission.manager.event.DefaultConfigurationUpdatedEvent" public="true">
+        <interface>ru.megaplan.jira.plugins.permission.manager.event.ConfigurationUpdatedEvent</interface>
+    </component>
+
+    <component key="megaplan-permission-mock"
+               name="Megaplan Permission Mock"
+               class="ru.megaplan.jira.plugins.permission.manager.ao.bean.mock.PermissionMock"
+               public="true">
+        <interface>ru.megaplan.jira.plugins.permission.manager.ao.bean.mock.IPermissionMock</interface>
+    </component>
+
+    <component key="megaplan-permission-group-mock"
+               name="Megaplan Permission Group Mock"
+               class="ru.megaplan.jira.plugins.permission.manager.ao.bean.mock.PermissionGroupMock"
+               public="true">
+        <interface>ru.megaplan.jira.plugins.permission.manager.ao.bean.mock.IPermissionGroupMock</interface>
+    </component>
+
+    <web-section key="mega-plugins-permissions" location="admin_plugins_menu">
+        <label key="ru.megaplan.jira.plugins.permission.manager.main">Megapermissions</label>
+    </web-section>
+    <web-item key="mega-plugins-permissions-main-config" section="admin_plugins_menu/mega-plugins-permissions">
+        <label>Permissions config</label>
+        <link linkid="mega-plugins-permissions-main-config-link">
+            /secure/admin/MegaPermissionsConfig!default.jspa
+        </link>
+    </web-item>
+
+</atlassian-plugin>

@@ -1,0 +1,37 @@
+#foreach ($permissionGroup in $action.permissionGroups)
+    <div>
+        <p>$permissionGroup.name</p>
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    #foreach($header in $action.permissionHeaders)
+                        <th>$!header</th>
+                    #end
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            #foreach ($permissionBean in $permissionGroup.permissions)
+                <tr>
+                    #foreach ($field in $action.getPermissionBeanValues($permissionBean))
+                        <td>$!field</td>
+                        #set ($field = "")
+                    #end
+                    <td>
+                        <a href="MegaPermissionsConfig!deletePermission.jspa?permissionId=$permissionBean.ID">Delete</a>
+                    </td>
+                </tr>
+            #end
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <form action="MegaPermissionsConfig!addPermission.jspa" method="POST">
+            <input type="submit" value="Add"></input>
+            <input type="hidden" name="permissionGroupName" value="$permissionGroup.name"></input>
+        </form>
+    </div>
+
+#end

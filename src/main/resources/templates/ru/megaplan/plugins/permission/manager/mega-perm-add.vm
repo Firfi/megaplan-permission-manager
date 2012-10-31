@@ -1,0 +1,31 @@
+#foreach($message in $errorMessages)
+   <p>$message</p>
+#end
+<form action="MegaPermissionsConfig!addPermission.jspa" method="POST">
+    <p>User</p>
+    #if ($errors.get("userName"))
+        <p> $errors.get("userName") </p>
+    #end
+        <input name="userName" type="text"></input>
+    <p>Project Role</p>
+    #if ($errors.get("projectRoleName"))
+        <p> $errors.get("projectRoleName") </p>
+    #end
+        <input name="projectRoleName" type="text"></input>
+    <p>Group</p>
+    #if ($errors.get("groupName"))
+        <p> $errors.get("groupName") </p>
+    #end
+        <input name="groupName" type="text"></input>
+    <p>Project</p>
+    #if ($errors.get("projectKey"))
+        <p> $errors.get("projectKey") </p>
+    #end
+
+        <input name="projectKey" type="text"></input>
+    <input name="add" type="hidden" value="true"></input>
+    <input name="permissionGroupName" type="hidden" value="$permissionGroupName"/>
+    <br>
+    <input type="submit"></input>
+</form>
+<a href="MegaPermissionsConfig!default.jspa">Back</a>
